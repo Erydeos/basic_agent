@@ -18,15 +18,14 @@ parser = argparse.ArgumentParser(description="Chatbot")
 parser.add_argument("user_prompt", type=str, help="User prompt")
 args = parser.parse_args()
 
-response = client.chat.completions.create(
-    model="openrouter/free",
-    messages=[
-        {
-            "role": "user",
-            "content": args.user_prompt,
-        }
-    ],
-)
+messages = [
+    {
+        "role": "user",
+        "content": args.user_prompt,
+    }
+]
+
+response = client.chat.completions.create(model="openrouter/free", messages=messages)
 
 
 def main():
@@ -35,10 +34,10 @@ def main():
         raise RuntimeError("no usage stuff")
     else:
         print(
-            f"Prompt tokens: {response.usage.prompt_tokens}\nResponse tokens: {response.usage.completion_tokens}"
+            f"\nPrompt tokens: {response.usage.prompt_tokens}\nResponse tokens: {response.usage.completion_tokens}"
         )
-    print(f"Prompt: {args.user_prompt}")
-    print(f"Response: {response.choices[0].message.content}")
+    print(f"\nPrompt: {args.user_prompt}")
+    print(f"\nResponse: {response.choices[0].message.content}")
 
 
 if __name__ == "__main__":
