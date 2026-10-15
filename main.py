@@ -1,43 +1,14 @@
-import argparse
 import os
 
-from dotenv import load_dotenv
-from openai import OpenAI
-
-load_dotenv()
-api_key = os.environ.get("OPENROUTER_API_KEY")
-if api_key is None:
-    raise RuntimeError("api key not found")
-
-client = OpenAI(
-    base_url="https://openrouter.ai/api/v1",
-    api_key=api_key,
-)
-
-parser = argparse.ArgumentParser(description="Chatbot")
-parser.add_argument("user_prompt", type=str, help="User prompt")
-args = parser.parse_args()
-
-messages = [
-    {
-        "role": "user",
-        "content": args.user_prompt,
-    }
-]
-
-response = client.chat.completions.create(model="openrouter/free", messages=messages)
+from functions import *
 
 
 def main():
-    print("Hello from agent-py!")
-    if response.usage is None:
-        raise RuntimeError("no usage stuff")
-    else:
-        print(
-            f"\nPrompt tokens: {response.usage.prompt_tokens}\nResponse tokens: {response.usage.completion_tokens}"
-        )
-    print(f"\nPrompt: {args.user_prompt}")
-    print(f"\nResponse: {response.choices[0].message.content}")
+    api_key = get_api()
+    client = get_client(api_key)
+    messages, prompt = get_messages()
+    response = generate_content(client, messages)
+    print_response(response, prompt)
 
 
 if __name__ == "__main__":
