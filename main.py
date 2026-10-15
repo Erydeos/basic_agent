@@ -26,7 +26,13 @@ response = client.chat.completions.create(
 
 def main():
     print("Hello from agent-py!")
-    print(response.choices[0].message.content)
+    if response.usage is None:
+        raise RuntimeError("no usage stuff")
+    else:
+        print(
+            f"Prompt tokens: {response.usage.prompt_tokens}\nResponse tokens: {response.usage.completion_tokens}"
+        )
+    print(f"Response: {response.choices[0].message.content}")
 
 
 if __name__ == "__main__":
