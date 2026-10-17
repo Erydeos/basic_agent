@@ -14,17 +14,19 @@ def get_api() -> str:
     return api_key
 
 
-def print_response(response, prompt) -> None:
+def print_response(response, args) -> None:
     print("Hello from agent-py!")
 
-    if response.usage is None:
-        raise RuntimeError("no usage stuff")
-    else:
-        print(
-            f"\nPrompt tokens: {response.usage.prompt_tokens}\nResponse tokens: {response.usage.completion_tokens}"
-        )
+    if args.verbose:
+        print(f"\nPrompt: {args.user_prompt}")
+        if response.usage is None:
+            raise RuntimeError("no usage stuff")
+        else:
+            print(
+                f"\nPrompt tokens: {response.usage.prompt_tokens}\nResponse tokens: {response.usage.completion_tokens}"
+            )
 
-    print(f"\nPrompt: {prompt}")
+
     print(f"\nResponse: {response.choices[0].message.content}")
 
 
@@ -38,7 +40,10 @@ def generate_content(client, messages):
 
 def get_messages():
     parser = argparse.ArgumentParser(description="Chatbot")
+
     parser.add_argument("user_prompt", type=str, help="User prompt")
+    parser.add_argument("--verbose", action="store_true", help= "Enable verbose output")
+
     args = parser.parse_args()
 
     messages = [
@@ -48,7 +53,7 @@ def get_messages():
         }
     ]
 
-    return messages, args.user_prompt
+    return messages, args
 
 
 def get_client(api_key):

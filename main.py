@@ -6,9 +6,9 @@ from functions import *
 def main():
     api_key = get_api()
     client = get_client(api_key)
-    messages, prompt = get_messages()
+    messages, args = get_messages()
     response = generate_content(client, messages)
-    print_response(response, prompt)
+    print_response(response, args)
 
 
 if __name__ == "__main__":
