@@ -18,7 +18,7 @@ def print_response(response, args) -> None:
     print("Hello from agent-py!")
 
     if args.verbose:
-        print(f"\nPrompt: {args.user_prompt}")
+        print(f"\nUser prompt: {args.user_prompt}")
         if response.usage is None:
             raise RuntimeError("no usage stuff")
         else:
