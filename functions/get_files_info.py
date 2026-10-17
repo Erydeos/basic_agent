@@ -2,9 +2,7 @@ import os
 
 def get_files_info(working_directory: str, directory: str=".") -> None:
     try:
-        work_path = os.path.abspath(working_directory)
-        target_dir = os.path.abspath(os.path.join(working_directory, directory))
-        valid_target_dir = os.path.commonpath([work_path, target_dir]) == work_path
+        valid_target_dir, target_dir = is_valid_path(working_directory, directory)
 
         if not valid_target_dir:
             print(f'Error: Cannot list "{directory}" as it is outside the permitted working directory')
@@ -30,3 +28,9 @@ def print_contents(target_dir, depth=""):
         if is_dir:
             depth += "    "
             print_contents(f"{target_dir}/{item}", depth=depth)
+
+def is_valid_path(working_directory, directory):
+    work_path = os.path.abspath(working_directory)
+    target_dir = os.path.abspath(os.path.join(working_directory, directory))
+    valid_target_dir = os.path.commonpath([work_path, target_dir]) == work_path
+    return valid_target_dir, target_dir
