@@ -33,10 +33,10 @@ def main():
                 else:
                     result_msg = call_function(tool_call)
 
-
-            messages.append({"role": "Assistant", "content": response.choices[0].message.reasoning})
+            if  response.choices[0].message.reasoning:
+                messages.append({"role": "Assistant", "content": response.choices[0].message.reasoning})
             messages.append(result_msg)
-            #print(messages)
+
 
             response = generate_content(client, messages, available_functions)
 

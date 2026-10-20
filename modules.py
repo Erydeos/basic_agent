@@ -57,7 +57,7 @@ def generate_content(client, messages, tools=[]):
     response = client.chat.completions.create(
         model="gpt-oss:20b",
         messages=messages,
-        temperature=0,
+        #temperature=0,
         tools=tools,
     )
     return response
@@ -96,35 +96,38 @@ def get_client(api_key):
 
 
 def call_function(tool_call, verbose: bool = False) -> dict:
-    function_name = tool_call.function.name
-    function_args = json.loads(tool_call.function.arguments or "{}")
-    id = tool_call.id
+    try:
+        function_name = tool_call.function.name
+        function_args = json.loads(tool_call.function.arguments or "{}")
+        id = tool_call.id
 
-    if verbose:
-        print(f" - Calling function: {function_name}({function_args})")
-    else:
-        print(f" - Calling function: {function_name}")
+        if verbose:
+            print(f" - Calling function: {function_name}({function_args})")
+        else:
+            print(f" - Calling function: {function_name}")
 
-    function_map = {
-        "get_file_content": get_file_content,
-        "get_files_info": get_files_info,
-        "write_file": write_file,
-        "run_python_file": run_python_file
-    }
-
-    if function_name not in function_map:
-        return {
-            "role": "tool",
-            "tool_call_id": tool_call.id,
-            "content": f"Error: Unknown function: {function_name}",
+        function_map = {
+            "get_file_content": get_file_content,
+            "get_files_info": get_files_info,
+            "write_file": write_file,
+            "run_python_file": run_python_file
         }
 
-    function_args["working_directory"] = "./calculator"
+        if function_name not in function_map:
+            return {
+                "role": "tool",
+                "tool_call_id": tool_call.id,
+                "content": f"Error: Unknown function: {function_name}",
+            }
 
-    result = function_map[function_name](**function_args)
+        function_args["working_directory"] = "./calculator"
 
-    return {
-        "role":"tool",
-        "tool_call_id": id,
-        "content": result,
-    }
+        result = function_map[function_name](**function_args)
+
+        return {
+            "role":"tool",
+            "tool_call_id": id,
+            "content": result,
+        }
+    except Exception as e:
+        print(f"   Error: {e}")

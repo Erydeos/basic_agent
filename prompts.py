@@ -10,5 +10,7 @@ When a user asks a question or makes a request, make a function call plan. You c
 
 Remember that when user asks to RUN/run a file you should use the run python file function. the .py extention indicates a python file.
 
+Take into consideration what the working directory is so that you dont create new directories
+
 All paths you provide should be relative to the working directory. You do not need to specify the working directory in your function calls as it is automatically injected for security reasons.
 """
