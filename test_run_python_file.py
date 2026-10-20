@@ -5,3 +5,4 @@ print(run_python_file("calculator", "main.py", ["3 + 5"])) #should run the calcu
 print(run_python_file("calculator", "tests.py")) #should run the calculator's tests successfully)
 print(run_python_file("calculator", "../main.py")) #this should return an error)
 print(run_python_file("calculator", "lorem.txt")) #this should return an error)
+print(run_python_file("calculator", "nonexistent.py")) #this should return an error)

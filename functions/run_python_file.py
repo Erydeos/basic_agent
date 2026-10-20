@@ -13,7 +13,7 @@ working_directory: str, file_path: str, args: list[str] | None = None
             return f'Error: Cannot execute "{file_path}" as it is outside the permitted working directory'
 
         if not os.path.isfile(target_file):
-            return f'Error: File not found or is not a regular file: "{file_path}"'
+            return f'Error: "{file_path}" does not exist or is not a regular file'
 
         if file_path[-3:] != ".py":
            return f'Error: "{file_path}" is not a Python file'
