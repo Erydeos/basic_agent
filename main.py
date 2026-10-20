@@ -1,7 +1,5 @@
 import os
-
-from functions import *
-
+from modules import *
 
 def main():
     api_key = get_api()
