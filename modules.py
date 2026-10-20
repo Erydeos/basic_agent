@@ -3,6 +3,7 @@ import os
 
 from dotenv import load_dotenv
 from openai import OpenAI
+from prompts import *
 
 
 def get_api() -> str:
@@ -33,7 +34,9 @@ def print_response(response, args) -> None:
 def generate_content(client, messages):
 
     response = client.chat.completions.create(
-        model="openrouter/free", messages=messages
+        model="openrouter/free",
+        messages=messages,
+        temperature=0
     )
     return response
 
@@ -47,6 +50,11 @@ def get_messages():
     args = parser.parse_args()
 
     messages = [
+        {
+            "role": "system",
+            "content": system_prompt
+        },
+
         {
             "role": "user",
             "content": args.user_prompt,

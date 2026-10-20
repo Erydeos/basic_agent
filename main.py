@@ -1,6 +1,7 @@
 import os
 from modules import *
 
+
 def main():
     api_key = get_api()
     client = get_client(api_key)
