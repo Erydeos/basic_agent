@@ -2,6 +2,27 @@ import os
 from .get_files_info import is_valid_path
 import subprocess
 
+schema_run_python_file = {
+    "type": "function",
+    "function": {
+        "name": "run_python_file",
+        "description": "Run/execute a python file relative to the working directory",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "file_path": {
+                    "type": "string",
+                    "description": "file path to the file to run, relative to the working directory",
+                },
+                "args": {
+                    "type": "list",
+                    "description": "list of the arguments that the file will run with, (default is None)",
+                },
+            },
+        },
+    },
+}
+
 
 def run_python_file(
 working_directory: str, file_path: str, args: list[str] | None = None

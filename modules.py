@@ -28,6 +28,8 @@ def print_response(response, args) -> None:
                 f"\nPrompt tokens: {response.usage.prompt_tokens}\nResponse tokens: {response.usage.completion_tokens}"
             )
 
+    response = response.choices[0].message
+
     if response.tool_calls:
         for tool_call in response.tool_calls:
             function_args = json.loads(tool_call.function.arguments or "{}")
@@ -40,12 +42,12 @@ def print_response(response, args) -> None:
 def generate_content(client, messages, tools=[]):
 
     response = client.chat.completions.create(
-        model="openrouter/free",
+        model="gpt-oss:20b",
         messages=messages,
         temperature=0,
         tools=tools,
     )
-    return response.choices[0].message
+    return response
 
 
 def get_messages():
@@ -73,8 +75,8 @@ def get_messages():
 
 def get_client(api_key):
     client = OpenAI(
-        base_url="https://openrouter.ai/api/v1",
-        api_key=api_key,
+        base_url="http://localhost:11434/v1",
+        api_key="ollama",
     )
 
     return client
