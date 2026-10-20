@@ -47,9 +47,9 @@ working_directory: str, file_path: str, args: list[str] | None = None
 
         output = ""
         if result.returncode != 0:
-            output += f"Process exited with code {result.returncode}\n"
+            output += f"Process exited with code {result.returncode}"
         if result.stdout:
-            output += f"STDOUT: {result.stdout}\n"
+            output += f"STDOUT: {result.stdout}"
         if result.stderr:
             output += f"STDERR: {result.stderr}"
 
