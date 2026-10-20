@@ -1,4 +1,5 @@
 import argparse
+import json
 import os
 
 from dotenv import load_dotenv
@@ -27,18 +28,24 @@ def print_response(response, args) -> None:
                 f"\nPrompt tokens: {response.usage.prompt_tokens}\nResponse tokens: {response.usage.completion_tokens}"
             )
 
+    if response.tool_calls:
+        for tool_call in response.tool_calls:
+            function_args = json.loads(tool_call.function.arguments or "{}")
+            print(f"Calling function: {tool_call.function.name}({function_args}")
 
-    print(f"\nResponse: {response.choices[0].message.content}")
+    else:
+        print(f"\nResponse: {response.content}")
 
 
-def generate_content(client, messages):
+def generate_content(client, messages, tools=[]):
 
     response = client.chat.completions.create(
         model="openrouter/free",
         messages=messages,
-        temperature=0
+        temperature=0,
+        tools=tools,
     )
-    return response
+    return response.choices[0].message
 
 
 def get_messages():
