@@ -13,10 +13,36 @@ available_functions = [
 ]
 
 def main():
+    #api_key = get_api()
+    #client = get_client(api_key)
+    #messages, args = get_messages()
+    #response = generate_content(client, messages, available_functions)
+    #print_response(response, args)
+
     api_key = get_api()
     client = get_client(api_key)
     messages, args = get_messages()
     response = generate_content(client, messages, available_functions)
+
+
+    for _ in range(20):
+        if response.choices[0].message.tool_calls:
+            for tool_call in response.choices[0].message.tool_calls:
+                if verbose:
+                    result_msg = call_function(tool_call, verbose=True)
+                else:
+                    result_msg = call_function(tool_call)
+
+
+            messages.append({"role": "Assistant", "content": response.choices[0].message.reasoning})
+            messages.append(result_msg)
+            #print(messages)
+
+            response = generate_content(client, messages, available_functions)
+
+        else:
+            break
+
     print_response(response, args)
 
 

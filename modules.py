@@ -63,7 +63,7 @@ def generate_content(client, messages, tools=[]):
     return response
 
 
-def get_messages():
+def get_messages(old=None):
     parser = argparse.ArgumentParser(description="Chatbot")
 
     parser.add_argument("user_prompt", type=str, help="User prompt")

@@ -18,7 +18,7 @@ schema_get_files_info = {
 }
 
 
-def get_files_info(working_directory: str, directory: str=".") -> None:
+def get_files_info(working_directory: str, directory: str="."):
     try:
         valid_target_dir, target_dir = is_valid_path(working_directory, directory)
 
@@ -30,22 +30,24 @@ def get_files_info(working_directory: str, directory: str=".") -> None:
             print(f'Error: "{directory}" is not a directory')
             return
 
-        print(f'Success: "{directory}" is within the working directory')
-        print(f"Result for '{directory}' directory:")
+        #print(f'Success: "{directory}" is within the working directory')
+        #print(f"Result for '{directory}' directory:")
 
-        print_contents(target_dir)
+        return print_contents(target_dir)
 
     except Exception as e:
         print(f"   Error: {e}")
 
 
-def print_contents(target_dir, depth=""):
+def print_contents(target_dir, depth="", result=""):
+
     for item in os.listdir(target_dir):
         is_dir = os.path.isdir(f'{target_dir}/{item}')
-        print(f"{depth}  - {item}: file_size={os.path.getsize(f"{target_dir}/{item}")}, is_dir={is_dir}")
+        result += f"{depth}  - {item}: file_size={os.path.getsize(f"{target_dir}/{item}")}, is_dir={is_dir}"
         if is_dir:
             depth += "    "
-            print_contents(f"{target_dir}/{item}", depth=depth)
+            print_contents(f"{target_dir}/{item}", depth=depth, result=result)
+    return result
 
 def is_valid_path(working_directory, directory):
     work_path = os.path.abspath(working_directory)
